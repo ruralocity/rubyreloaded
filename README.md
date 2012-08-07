@@ -1,0 +1,1 @@
+Exercises for the August 2012 edition of Ruby Reloaded.
