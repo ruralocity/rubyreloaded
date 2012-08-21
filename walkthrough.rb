@@ -15,7 +15,7 @@
 #
 #     wt = Walkthrough.new
 #     output = wt.walkthrough "Sample Walkthrough" do
-#       wt.section "Section A" do
+#       section "Section A" do
 #         item_group "Item Group A" do
 #           item "First Item", :checkbox
 #           item "Second Item", :radio do
@@ -28,7 +28,7 @@
 #         end
 #       end
 #       
-#       wt.section "Section B" do
+#       section "Section B" do
 #         item_group "Item Group C" do
 #           item "Fourth Item", :checkbox
 #         end
@@ -90,91 +90,94 @@ end
 # And here are the tests:
 #
 
-require 'minitest/autorun'
+if __FILE__ == $0
 
-class WalkthroughSpec < MiniTest::Spec
-  it "creates a walkthrough structure" do
-    wt = Walkthrough.new
-    output = wt.walkthrough 'Classroom Walkthrough'
-    output.must_equal "<div class='walkthrough'><h1>Classroom Walkthrough</h1></div>"
-  end
+  require 'minitest/autorun'
 
-  it "creates a walkthrough section" do
-    wt = Walkthrough.new
-    output = wt.section 'Routines'
-    output.must_equal "<div class='section'><h2>Routines</h2></div>"
-  end
-  
-  it "nests item groups within sections" do
-    wt = Walkthrough.new
-    output = wt.section 'Routines' do
-      item_group 'Observed'
+  class WalkthroughSpec < MiniTest::Spec
+    it "creates a walkthrough structure" do
+      wt = Walkthrough.new
+      output = wt.walkthrough 'Classroom Walkthrough'
+      output.must_equal "<div class='walkthrough'><h1>Classroom Walkthrough</h1></div>"
     end
+
+    it "creates a walkthrough section" do
+      wt = Walkthrough.new
+      output = wt.section 'Routines'
+      output.must_equal "<div class='section'><h2>Routines</h2></div>"
+    end
+  
+    it "nests item groups within sections" do
+      wt = Walkthrough.new
+      output = wt.section 'Routines' do
+        item_group 'Observed'
+      end
     
-    output.must_equal "<div class='section'><h2>Routines</h2><div class='item_group'><h3>Observed</h3></div></div>"
-  end
-
-  it "creates an item group" do
-    wt = Walkthrough.new
-    output = wt.item_group 'Programs'
-    output.must_equal "<div class='item_group'><h3>Programs</h3></div>"
-  end
-
-  it "nests items within item groups" do
-    wt = Walkthrough.new
-    output = wt.item_group 'Observed' do
-      item 'Unit Organizer', :checkbox
-      item 'Lesson Organizer', :checkbox
+      output.must_equal "<div class='section'><h2>Routines</h2><div class='item_group'><h3>Observed</h3></div></div>"
     end
+
+    it "creates an item group" do
+      wt = Walkthrough.new
+      output = wt.item_group 'Programs'
+      output.must_equal "<div class='item_group'><h3>Programs</h3></div>"
+    end
+
+    it "nests items within item groups" do
+      wt = Walkthrough.new
+      output = wt.item_group 'Observed' do
+        item 'Unit Organizer', :checkbox
+        item 'Lesson Organizer', :checkbox
+      end
     
-    output.must_equal "<div class='item_group'><h3>Observed</h3><div>[ ] Unit Organizer</div><div>[ ] Lesson Organizer</div></div>"
-  end
-
-  it "creates a checkbox item" do
-    wt = Walkthrough.new
-    output = wt.item 'Special Education', :checkbox
-    output.must_equal "<div>[ ] Special Education</div>"
-  end
-  
-  it "creates a radio group item" do
-    wt = Walkthrough.new
-    output = wt.item 'Subject', :radio do
-      value 'Math'
-      value 'Science'
-      value 'Social Studies'
+      output.must_equal "<div class='item_group'><h3>Observed</h3><div>[ ] Unit Organizer</div><div>[ ] Lesson Organizer</div></div>"
     end
-    output.must_equal "<div>Subject ( ) Math ( ) Science ( ) Social Studies</div>"
-  end
+
+    it "creates a checkbox item" do
+      wt = Walkthrough.new
+      output = wt.item 'Special Education', :checkbox
+      output.must_equal "<div>[ ] Special Education</div>"
+    end
   
-  it "creates a short answer item" do
-    wt = Walkthrough.new
-    output = wt.item 'Students', :text
-    output.must_equal "<div>___ Students</div>"
-  end
+    it "creates a radio group item" do
+      wt = Walkthrough.new
+      output = wt.item 'Subject', :radio do
+        value 'Math'
+        value 'Science'
+        value 'Social Studies'
+      end
+      output.must_equal "<div>Subject ( ) Math ( ) Science ( ) Social Studies</div>"
+    end
   
-  it "creates a simple walkthrough" do
-    wt = Walkthrough.new
-    output = wt.walkthrough "Sample Walkthrough" do
-      wt.section "Section A" do
-        item_group "Item Group A" do
-          item "First Item", :checkbox
-          item "Second Item", :radio do
-            value "First Value"
-            value "Second Value"
+    it "creates a short answer item" do
+      wt = Walkthrough.new
+      output = wt.item 'Students', :text
+      output.must_equal "<div>___ Students</div>"
+    end
+  
+    it "creates a simple walkthrough" do
+      wt = Walkthrough.new
+      output = wt.walkthrough "Sample Walkthrough" do
+        section "Section A" do
+          item_group "Item Group A" do
+            item "First Item", :checkbox
+            item "Second Item", :radio do
+              value "First Value"
+              value "Second Value"
+            end
+          end
+          item_group "Item Group B" do
+            item "Third Item", :text
           end
         end
-        item_group "Item Group B" do
-          item "Third Item", :text
-        end
-      end
       
-      wt.section "Section B" do
-        item_group "Item Group C" do
-          item "Fourth Item", :checkbox
+        section "Section B" do
+          item_group "Item Group C" do
+            item "Fourth Item", :checkbox
+          end
         end
       end
-    end
     
-    output.must_equal "<div class='walkthrough'><h1>Sample Walkthrough</h1><div class='section'><h2>Section A</h2><div class='item_group'><h3>Item Group A</h3><div>[ ] First Item</div><div>Second Item ( ) First Value ( ) Second Value</div></div><div class='item_group'><h3>Item Group B</h3><div>___ Third Item</div></div></div><div class='section'><h2>Section B</h2><div class='item_group'><h3>Item Group C</h3><div>[ ] Fourth Item</div></div></div></div>"
+      output.must_equal "<div class='walkthrough'><h1>Sample Walkthrough</h1><div class='section'><h2>Section A</h2><div class='item_group'><h3>Item Group A</h3><div>[ ] First Item</div><div>Second Item ( ) First Value ( ) Second Value</div></div><div class='item_group'><h3>Item Group B</h3><div>___ Third Item</div></div></div><div class='section'><h2>Section B</h2><div class='item_group'><h3>Item Group C</h3><div>[ ] Fourth Item</div></div></div></div>"
+    end
   end
 end
