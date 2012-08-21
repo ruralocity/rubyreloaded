@@ -75,15 +75,15 @@ class Walkthrough
   
   private
   
-    def value(name)
-      @out << "( ) #{name} "
-    end
+  def value(name)
+    @out << "( ) #{name} "
+  end
 
-    def div(name, type, tag, &block)
-      @out << "<div class='#{type}'><#{tag}>#{name}</#{tag}>"
-      instance_eval &block if block_given?
-      @out << "</div>"
-    end
+  def div(name, type, tag, &block)
+    @out << "<div class='#{type}'><#{tag}>#{name}</#{tag}>"
+    instance_eval &block if block_given?
+    @out << "</div>"
+  end
 end
 
 #
