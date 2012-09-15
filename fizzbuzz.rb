@@ -11,11 +11,11 @@ class FizzBuzz
   def self.check(num)
     if num.class.name == 'Fixnum'
       out = case
-      when do_math(num,15)
+      when divisible_by(num,15)
         "FizzBuzz"
-      when do_math(num,3)
+      when divisible_by(num,3)
         "Fizz"
-      when do_math(num,5)
+      when divisible_by(num,5)
         "Buzz"
       else
         num
@@ -40,7 +40,7 @@ class FizzBuzz
   
   private
   
-  def self.do_math(num,divisible_by)
+  def self.divisible_by(num,divisible_by)
     num-divisible_by*(num/divisible_by).floor == 0
   end
 end
