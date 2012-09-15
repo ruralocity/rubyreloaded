@@ -27,9 +27,12 @@ class FizzBuzz
     end
   end
   
-  def self.count(*range)
+  def self.count(first, *range)
     count = []
-    range.each do |item|
+    r = Array(first)
+    r.concat(range)
+    
+    r.each do |item|
       count << check(item)
     end
     count.join(', ')
@@ -85,9 +88,9 @@ if __FILE__ == $0
         FizzBuzz.count(3).must_equal "Fizz"
       end
     
-      # it "accepts ranges" do
-      #   FizzBuzz.count(1..5).must_equal "1, 2, Fizz, 4, Buzz"
-      # end
+      it "accepts ranges" do
+        FizzBuzz.count(1..5).must_equal "1, 2, Fizz, 4, Buzz"
+      end
     end
   end
 end
